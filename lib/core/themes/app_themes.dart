@@ -15,6 +15,7 @@ final lightTheme = ThemeData(
     centerTitle: true,
     iconTheme: IconThemeData(color: AppConstants.primaryColor),
   ),
+  cardTheme: CardThemeData(color: Colors.grey.shade200),
 
   colorScheme: ColorScheme.light(
     primary: AppConstants.primaryColor,
@@ -52,6 +53,7 @@ final lightTheme = ThemeData(
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
+  cardTheme: CardThemeData(color: Colors.grey.shade900),
 
   primaryColor: AppConstants.primaryColor,
 
