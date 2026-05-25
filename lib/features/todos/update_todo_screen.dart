@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/core/routes/app_routes.dart';
 import 'package:tasksphere/features/todos/todo_model.dart';
 
 class UpdateTodoScreen extends StatefulWidget {
@@ -72,11 +71,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
 
     if (!mounted) return;
 
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      RoutePaths.todos,
-      (route) => false,
-    );
+    Navigator.pop(context);
   }
 
   @override
