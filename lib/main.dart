@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasksphere/core/constants/app_constants.dart';
 import 'package:tasksphere/core/routes/app_routes.dart';
 import 'package:tasksphere/core/themes/app_themes.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [AppConstants.routeObserver],
       routes: appRoutes,
       initialRoute: RoutePaths.login,
     );

@@ -19,7 +19,7 @@ enum FeatureValue {
   todo({
     "title": "Todo App",
     "icon": Icons.list,
-    "route": "/todo",
+    "route": "/todos",
     "description": "A simple todo app",
   });
 
