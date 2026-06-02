@@ -67,8 +67,7 @@ class _LoginformState extends State<Loginform> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.lock_outline, size: 70, color: AppConstants.primaryColor),
-
+          Image.asset("assets/logo_icon.png", height: 100),
           const SizedBox(height: 16),
 
           Text(

@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
 import 'package:tasksphere/core/routes/app_routes.dart';
 import 'package:tasksphere/core/themes/app_themes.dart';
+import 'package:tasksphere/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    SplashScreen(
+      onFinished: () {
+        runApp(const MyApp());
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +24,7 @@ class MyApp extends StatelessWidget {
     final isDarkMode = themeMode == Brightness.dark;
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Task Sphere',
       darkTheme: darkTheme,
       theme: lightTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,

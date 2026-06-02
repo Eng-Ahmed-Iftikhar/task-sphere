@@ -7,15 +7,15 @@ import 'package:tasksphere/features/todos/todos_screen.dart';
 import 'package:tasksphere/features/todos/update_todo_screen.dart';
 
 class RoutePaths {
-  static final home = "/";
-  static final login = "/login";
-  static final counter = "/counter";
-  static final todos = "/todos";
-  static final createTodo = "/create-todo";
-  static final updateTodo = "/update-todo";
+  static const home = "/";
+  static const login = "/login";
+  static const counter = "/counter";
+  static const todos = "/todos";
+  static const createTodo = "/create-todo";
+  static const updateTodo = "/update-todo";
 }
 
-Map<String, Widget Function(BuildContext)> appRoutes = {
+Map<String, WidgetBuilder> appRoutes = {
   RoutePaths.home: (context) => const HomeScreen(),
   RoutePaths.login: (context) => const LoginScreen(),
   RoutePaths.counter: (context) => const CounterScreen(),
@@ -23,8 +23,13 @@ Map<String, Widget Function(BuildContext)> appRoutes = {
   RoutePaths.createTodo: (context) => const CreateTodoScreen(),
 
   RoutePaths.updateTodo: (context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
+    final route = ModalRoute.of(context);
 
-    return UpdateTodoScreen(id: args.toString());
+    final args = route?.settings.arguments;
+
+    // Safe fallback to avoid crash
+    final id = args?.toString() ?? "";
+
+    return UpdateTodoScreen(id: id);
   },
 };
