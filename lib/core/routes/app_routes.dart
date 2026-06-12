@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasksphere/features/auth/login_screen.dart';
+import 'package:tasksphere/features/auth/presentation/screens/login_screen.dart';
 import 'package:tasksphere/features/counter/counter_screen.dart';
 import 'package:tasksphere/features/home/home_screen.dart';
 import 'package:tasksphere/features/todos/create_todo_screen.dart';

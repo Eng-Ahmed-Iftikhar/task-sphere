@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "568613442085",
+    "project_id": "task-sphere-e46ad",
+    "storage_bucket": "task-sphere-e46ad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568613442085:android:302387b7708efef054e5cc",
+        "android_client_info": {
+          "package_name": "com.example.tasksphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGCalr6KvjKP-6x8lCt7hdnRc8A6NQLl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
