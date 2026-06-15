@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/core/widgets/layouts/scaffold_layout.dart';
 
 class CounterScreen extends StatefulWidget {
   const CounterScreen({super.key});
@@ -36,7 +35,7 @@ class _CounterScreenState extends State<CounterScreen> {
     final themeMode = Theme.brightnessOf(context);
     final isDarkMode = themeMode == Brightness.dark;
 
-    return ScaffoldLayout(
+    return Scaffold(
       appBar: AppBar(
         title: const Text(
           "Counter App",

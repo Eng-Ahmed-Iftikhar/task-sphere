@@ -1,33 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/core/widgets/buttons/social_login_button.dart';
-import 'package:tasksphere/core/widgets/dividers/text_divider.dart';
-import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
-import 'package:tasksphere/features/auth/widgets/login_form.dart';
+import 'package:tasksphere/features/auth/widgets/register_form.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  late bool isGoogleLoading = false;
-
-  void handleLogin() async {
-    final auth = ref.read(authProvider.notifier);
-    setState(() {
-      isGoogleLoading = true;
-    });
-    await auth.loginWithGoogle();
-
-    setState(() {
-      isGoogleLoading = false;
-    });
-  }
-
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -64,19 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 ),
 
-                child: Column(
-                  children: [
-                    LoginForm(),
-                    const SizedBox(height: 10),
-                    TextDivider(text: "OR"),
-                    const SizedBox(height: 10),
-                    SocialLoginButton(
-                      text: "Continue with Google",
-                      imagePath: "assets/images/google.png",
-                      onPressed: handleLogin,
-                    ),
-                  ],
-                ),
+                child: Column(children: [RegisterForm()]),
               ),
             ),
           ),

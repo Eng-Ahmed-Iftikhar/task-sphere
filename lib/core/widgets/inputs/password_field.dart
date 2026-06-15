@@ -37,6 +37,7 @@ class _PasswordFieldState extends State<PasswordField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: widget.label,
+        errorMaxLines: 3,
         prefixIcon: Icon(Icons.lock_outline, color: AppConstants.primaryColor),
         suffixIcon: IconButton(
           onPressed: _toggleVisibility,

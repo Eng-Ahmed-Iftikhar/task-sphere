@@ -1,13 +1,11 @@
-import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/core/error/exceptions.dart';
-import 'package:tasksphere/core/network/api_client.dart';
-import 'package:tasksphere/core/providers/network_providers.dart';
-import 'package:tasksphere/core/utils/app_utils.dart';
-import 'package:tasksphere/features/auth/data/models/auth_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tasksphere/core/constants/app_constants.dart';
+import 'package:tasksphere/core/error/exceptions.dart';
+import 'package:tasksphere/core/utils/app_utils.dart';
+import 'package:tasksphere/features/auth/data/models/auth_model.dart';
 
 abstract class AuthRemoteDataSource {
   /// Login a user with email and password
@@ -28,14 +26,13 @@ abstract class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final ApiClient _apiClient;
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference _firestore = FirebaseFirestore.instance.collection(
     'users',
   );
 
-  AuthRemoteDataSourceImpl(this._apiClient);
+  AuthRemoteDataSourceImpl();
 
   @override
   Future<AuthModel> login({
@@ -64,7 +61,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await _firestore.doc(user.uid).set({
           'name': user.displayName ?? "no name",
           'email': user.email,
-          'profile_picture': user.photoURL,
+          'img_url': user.photoURL,
           'phone': user.phoneNumber,
           'created_at': FieldValue.serverTimestamp(),
         });
@@ -72,7 +69,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         await _firestore.doc(user.uid).update({
           'name': user.displayName ?? "no name",
           'email': user.email,
-          'profile_picture': user.photoURL,
+          'img_url': user.photoURL,
           'phone': user.phoneNumber,
           'updated_at': FieldValue.serverTimestamp(),
         });
@@ -83,9 +80,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "user": {
           "name": user.displayName ?? "no name",
           "email": user.email ?? "",
-          "profile_picture": user.photoURL,
+          "img_url": user.photoURL,
           "phone": user.phoneNumber,
-          "stripe_customer_id": userDoc.get("stripe_customer_id"),
           "id": user.uid,
         },
       });
@@ -116,21 +112,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw ServerException(message: "Registration failed");
       }
       await user.updateDisplayName(name);
-      final result = await _apiClient.post(
-        "/stripe/create-customer",
-        data: {"email": email} as Map<String, dynamic>,
-      );
-      final stripeCustomerId = result.fold(
-        (error) => null,
-        (data) => data["customer_id"],
-      );
+
       await _firestore.doc(user.uid).set({
         'name': name,
         'email': email,
-        'profile_picture': user.photoURL,
+        'img_url': user.photoURL,
         'phone': user.phoneNumber,
         'created_at': FieldValue.serverTimestamp(),
-        'stripe_customer_id': stripeCustomerId,
       });
       final accessToken = await user.getIdToken(true) as String;
 
@@ -139,9 +127,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "user": {
           "name": user.displayName ?? "no name",
           "email": user.email ?? "",
-          "profile_picture": user.photoURL,
+          "img_url": user.photoURL,
           "phone": user.phoneNumber,
-          "stripe_customer_id": stripeCustomerId,
           "id": user.uid,
         },
       });
@@ -160,22 +147,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       final userDoc = await _firestore.doc(user.uid).get();
       if (!userDoc.exists) {
-        final result = await _apiClient.post(
-          "/stripe/create-customer",
-          data: {"email": user.email as dynamic},
-        );
-
-        final stripeCustomerId = result.fold(
-          (error) => null,
-          (data) => data["customer_id"],
-        );
         _firestore.doc(user.uid).set({
           'name': user.displayName ?? "no name",
           'email': user.email,
-          'profile_picture': user.photoURL,
+          'img_url': user.photoURL,
           'phone': user.phoneNumber,
           'created_at': FieldValue.serverTimestamp(),
-          'stripe_customer_id': stripeCustomerId,
         });
       }
       final accessToken = await user.getIdToken(true) as String;
@@ -185,9 +162,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "user": {
           "name": user.displayName ?? "no name",
           "email": user.email ?? "",
-          "profile_picture": user.photoURL,
+          "img_url": user.photoURL,
           "phone": user.phoneNumber,
-          "stripe_customer_id": userDoc.get("stripe_customer_id"),
           "id": user.uid,
         },
       });
@@ -260,28 +236,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       final userDoc = await _firestore.doc(user.uid).get();
       if (!userDoc.exists) {
-        final result = await _apiClient.post(
-          "/stripe/create-customer",
-          data: {"email": user.email as dynamic},
-        );
-
-        final stripeCustomerId = result.fold(
-          (error) => null,
-          (data) => data["customer_id"],
-        );
         await _firestore.doc(user.uid).set({
           'name': user.displayName ?? "no name",
           'email': user.email,
-          'profile_picture': user.photoURL,
+          'img_url': user.photoURL,
           'phone': user.phoneNumber,
-          'stripe_customer_id': stripeCustomerId,
           'created_at': FieldValue.serverTimestamp(),
         });
       } else {
         await _firestore.doc(user.uid).update({
           'name': user.displayName ?? "no name",
           'email': user.email,
-          'profile_picture': user.photoURL,
+          'img_url': user.photoURL,
           'phone': user.phoneNumber,
           'updated_at': FieldValue.serverTimestamp(),
         });
@@ -293,13 +259,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         "user": {
           "name": user.displayName ?? "no name",
           "email": user.email ?? "",
-          "profile_picture": user.photoURL,
+          "img_url": user.photoURL,
           "phone": user.phoneNumber,
-          "stripe_customer_id": userDoc.get("stripe_customer_id"),
+
           "id": user.uid,
         },
       });
     } on Exception catch (e) {
+      print("Google Sign-In error: $e");
       throw _handleException(e);
     }
   }
@@ -307,12 +274,5 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
 // Provider
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
-  final apiClient = ref.watch(apiClientProvider);
-  return AuthRemoteDataSourceImpl(apiClient);
-});
-
-// ApiClient provider
-final apiClientProvider = Provider.autoDispose<ApiClient>((ref) {
-  final dio = ref.watch(dioProvider);
-  return ApiClient(dio);
+  return AuthRemoteDataSourceImpl();
 });

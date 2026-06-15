@@ -19,12 +19,9 @@ class ScaffoldLayout extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsGeometry.all(20),
-          child: RefreshIndicator(
-            onRefresh: onRefresh ?? () async {},
-            child: body,
-          ),
+        child: RefreshIndicator(
+          onRefresh: onRefresh ?? () async {},
+          child: body,
         ),
       ),
       bottomSheet: bottomSheet,

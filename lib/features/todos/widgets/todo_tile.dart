@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tasksphere/core/routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/features/todos/todo_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
@@ -18,7 +19,10 @@ class TodoTile extends StatefulWidget {
 
 class _TodoTileState extends State<TodoTile> {
   Future<void> navigateToUpdatePage(int id) async {
-    Navigator.pushNamed(context, RoutePaths.updateTodo, arguments: id);
+    context.pushNamed(
+      RouteNames.updateTodo,
+      pathParameters: {"id": id.toString()},
+    );
 
     widget.onUpdate?.call();
   }

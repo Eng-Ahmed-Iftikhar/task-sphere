@@ -1,37 +1,49 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/core/routes/app_routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tasksphere/core/router/app_router.dart';
 import 'package:tasksphere/core/themes/app_themes.dart';
+import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
+import 'package:tasksphere/firebase_options.dart';
 import 'package:tasksphere/splash_screen.dart';
 
-void main() {
-  runApp(
-    SplashScreen(
-      onFinished: () {
-        runApp(const MyApp());
-      },
-    ),
-  );
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    final themeMode = Theme.brightnessOf(context);
-    final isDarkMode = themeMode == Brightness.dark;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
 
-    return MaterialApp(
+    final isLoading =
+        authState.isLoading || (authState.asData?.value.isLoading ?? false);
+
+    if (isLoading) {
+      return MaterialApp(
+        title: 'Task Sphere',
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
+        debugShowCheckedModeBanner: false,
+        home: const SplashScreen(),
+      );
+    }
+    final router = ref.watch(appRouterProvider);
+
+    return MaterialApp.router(
       title: 'Task Sphere',
-      darkTheme: darkTheme,
       theme: lightTheme,
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      navigatorObservers: [AppConstants.routeObserver],
-      routes: appRoutes,
-      initialRoute: RoutePaths.login,
+      routerConfig: router,
     );
   }
 }

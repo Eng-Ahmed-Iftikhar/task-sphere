@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasksphere/core/widgets/Layouts/Scaffold_layout.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tasksphere/core/router/routes.dart';
+import 'package:tasksphere/features/home/widgets/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,14 +14,14 @@ enum FeatureValue {
   counter({
     "title": "Counter",
     "icon": Icons.add,
-    "route": "/counter",
+    "route": RouteNames.counter,
     "description": "A simple counter app",
   }),
 
   todo({
     "title": "Todo App",
     "icon": Icons.list,
-    "route": "/todos",
+    "route": RouteNames.todos,
     "description": "A simple todo app",
   });
 
@@ -31,7 +33,8 @@ enum FeatureValue {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldLayout(
+    return Scaffold(
+      appBar: HomeAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: FeatureValue.values.map((feature) {
@@ -54,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 trailing: const Icon(Icons.arrow_forward, size: 18),
                 onTap: () {
-                  Navigator.pushNamed(context, feature.options["route"]);
+                  context.pushNamed(feature.options["route"]);
                 },
               ),
             ),

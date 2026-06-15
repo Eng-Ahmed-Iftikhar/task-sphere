@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/core/routes/app_routes.dart';
+import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/core/widgets/layouts/scaffold_layout.dart';
 import 'package:tasksphere/features/todos/todo_model.dart';
 import 'package:tasksphere/features/todos/widgets/EmptyTodos.dart';
@@ -29,10 +30,10 @@ class _TodosScreenState extends State<TodosScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    AppConstants.routeObserver.subscribe(
-      this,
-      ModalRoute.of(context)! as PageRoute,
-    );
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      AppConstants.routeObserver.subscribe(this, route);
+    }
   }
 
   @override
@@ -64,7 +65,7 @@ class _TodosScreenState extends State<TodosScreen> with RouteAware {
   }
 
   Future<void> navigateToCreatePage() async {
-    await Navigator.pushNamed(context, RoutePaths.createTodo);
+    context.pushNamed(RouteNames.createTodo);
   }
 
   @override
