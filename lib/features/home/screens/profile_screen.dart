@@ -225,7 +225,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           : null,
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+
         child: Column(
           children: [
             ProfileAvatar(
