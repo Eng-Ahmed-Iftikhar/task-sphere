@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tasksphere/core/error/exceptions.dart';
 import 'package:tasksphere/core/error/failures.dart';
 import 'package:tasksphere/core/error/firebase_auth_failures.dart';
@@ -24,6 +25,57 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remoteDataSource.login(
         email: email,
         password: password,
+      );
+
+      return Right(response.toEntity());
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseAuthFailure.fromException(e));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException {
+      return const Left(NetworkFailure());
+    } on UnauthorizedException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } on Exception {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> reAuthenticate({
+    required String password,
+  }) async {
+    try {
+      final response = await _remoteDataSource.reAuthenticate(
+        password: password,
+      );
+
+      return Right(response);
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseAuthFailure.fromException(e));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException {
+      return const Left(NetworkFailure());
+    } on UnauthorizedException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } on Exception {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthEntity>> updateProfile({
+    String? name,
+    String? email,
+    String? phone,
+    XFile? img,
+  }) async {
+    try {
+      final response = await _remoteDataSource.updateProfile(
+        name: name,
+        email: email,
+        img: img,
       );
 
       return Right(response.toEntity());

@@ -15,6 +15,8 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
     final name = user?.name ?? "Guest User";
     final email = user?.email ?? "";
     final avatarUrl = user?.imgUrl;
+    final themeMode = Theme.brightnessOf(context);
+    final isDarkMode = themeMode == Brightness.dark;
 
     return AppBar(
       title: Row(
@@ -34,7 +36,7 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
           onSelected: (value) async {
             switch (value) {
               case 'profile':
-                context.pushNamed(RouteNames.counter);
+                context.pushNamed(RouteNames.profile);
                 break;
 
               case 'logout':
@@ -69,15 +71,18 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
                           children: [
                             Text(
                               name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: isDarkMode ? Colors.white : Colors.black,
                               ),
                             ),
                             Text(
                               email,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                color: isDarkMode ? Colors.white : Colors.black,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),

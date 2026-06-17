@@ -128,6 +128,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                     "Already have an account?",
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.grey,
+                      fontSize: 14,
                     ),
                   ),
                   TextButton(

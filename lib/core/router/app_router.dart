@@ -25,7 +25,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final location = state.matchedLocation;
       print("location $location");
       final isAuthRoute =
-          location == RoutePaths.login || location == RoutePaths.register;
+          location == RoutePaths.login ||
+          location == RoutePaths.register ||
+          location == RoutePaths.forgotPassword;
 
       // Avoid redirecting until the auth check finishes.
       if (isAuthStateLoading) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tasksphere/core/routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
 
 class AuthGuard extends ConsumerWidget {
@@ -17,11 +18,7 @@ class AuthGuard extends ConsumerWidget {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        RoutePaths.login,
-        (route) => false,
-      );
+      context.pushNamed(RouteNames.login);
     });
 
     return const Scaffold(body: Center(child: CircularProgressIndicator()));

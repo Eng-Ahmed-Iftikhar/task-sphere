@@ -9,9 +9,11 @@ part of 'auth_model.dart';
 AuthModel _$AuthModelFromJson(Map<String, dynamic> json) => AuthModel(
   accessToken: json['access_token'] as String,
   user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
+  provider: json['provider'] as String,
 );
 
 Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
   'access_token': instance.accessToken,
   'user': instance.user,
+  'provider': instance.provider,
 };

@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:tasksphere/core/error/failures.dart';
 import 'package:tasksphere/features/auth/domain/entities/auth_entity.dart';
 import 'package:fpdart/fpdart.dart';
@@ -9,11 +10,19 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<Either<Failure, void>> reAuthenticate({required String password});
+
   /// Register a new user
   Future<Either<Failure, AuthEntity>> register({
     required String name,
     required String email,
     required String password,
+  });
+  Future<Either<Failure, AuthEntity>> updateProfile({
+    String? name,
+    String? email,
+    String? phone,
+    XFile? img,
   });
 
   /// Logout the current user

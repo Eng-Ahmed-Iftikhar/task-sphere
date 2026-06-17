@@ -5,7 +5,9 @@ import 'package:tasksphere/features/auth/domain/usecases/login_use_case.dart';
 import 'package:tasksphere/features/auth/domain/usecases/current_user_use_case.dart';
 import 'package:tasksphere/features/auth/domain/usecases/login_with_google_use_case.dart';
 import 'package:tasksphere/features/auth/domain/usecases/logout_use_case.dart';
+import 'package:tasksphere/features/auth/domain/usecases/re_auth_use_case.dart';
 import 'package:tasksphere/features/auth/domain/usecases/register_use_case.dart';
+import 'package:tasksphere/features/auth/domain/usecases/update_profile_use_case.dart';
 import 'package:tasksphere/features/auth/presentation/notifiers/auth_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasksphere/features/auth/presentation/notifiers/auth_state.dart';
@@ -32,6 +34,14 @@ final currentUserUseCaseProvider = Provider<CurrentUserUseCase>((ref) {
 
 final forgotPasswordUseCaseProvider = Provider<ForgotPasswordUseCase>((ref) {
   return ForgotPasswordUseCase(ref.watch(authRepositoryProvider));
+});
+
+final updateProfileUseCaseProvider = Provider<UpdateProfileUseCase>((ref) {
+  return UpdateProfileUseCase(ref.watch(authRepositoryProvider));
+});
+
+final reAuthUseCaseProvider = Provider<ReAuthUseCase>((ref) {
+  return ReAuthUseCase(ref.watch(authRepositoryProvider));
 });
 
 final authProvider = AsyncNotifierProvider<AuthNotifier, AuthState>(

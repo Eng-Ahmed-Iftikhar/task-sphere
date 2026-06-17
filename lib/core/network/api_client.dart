@@ -22,11 +22,15 @@ class ApiClient {
   }
 
   // POST request
-  Future<Either<Failure, T>> post<T>(String path, {required T data}) async {
+  Future<Either<Failure, Map<String, dynamic>>> post<T>(
+    String path, {
+    required T data,
+  }) async {
     try {
       final response = await _dio.post(path, data: data);
       return Right(response.data);
     } on DioException catch (e) {
+      print('POST request failed: ${e.response}');
       return Left(_handleError(e));
     }
   }

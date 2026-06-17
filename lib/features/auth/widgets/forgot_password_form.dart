@@ -5,22 +5,20 @@ import 'package:tasksphere/core/constants/app_constants.dart';
 import 'package:tasksphere/core/error/firebase_auth_failures.dart';
 import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/core/utils/app_utils.dart';
-import 'package:tasksphere/core/widgets/inputs/password_field.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
 
-class LoginForm extends ConsumerStatefulWidget {
-  const LoginForm({super.key});
+class ForgotPasswordForm extends ConsumerStatefulWidget {
+  const ForgotPasswordForm({super.key});
 
   @override
-  ConsumerState<LoginForm> createState() => _LoginFormState();
+  ConsumerState<ForgotPasswordForm> createState() => _ForgotPasswordFormState();
 }
 
-class _LoginFormState extends ConsumerState<LoginForm> {
+class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
   final _formKey = GlobalKey<FormState>();
   late bool isLoading = false;
 
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   String? _validateEmail(String? value) {
     final email = value?.trim();
@@ -35,28 +33,15 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     return null;
   }
 
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Password is required";
-    }
-
-    if (!AppUtils.isValidPassword(value)) {
-      return "Password must be at least 8 characters, include an uppercase letter, a lowercase letter, and a number";
-    }
-
-    return null;
-  }
-
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
-      // Call login API here using email and password
+      // Call forgot password API here using email
       final authActions = ref.read(authProvider.notifier);
       setState(() {
         isLoading = true;
       });
-      await authActions.login(email: email, password: password);
+      await authActions.forgotPassword(email: email);
       setState(() {
         isLoading = false;
       });
@@ -72,16 +57,15 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         ).showSnackBar(SnackBar(content: Text(errorMessage)));
         return;
       }
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Login successful")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Reset link sent successfully")),
+      );
     }
   }
 
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -100,7 +84,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             const SizedBox(height: 16),
 
             Text(
-              "Welcome to Task Sphere",
+              "Forgot Password",
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -114,7 +98,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
                 children: [
                   Text(
-                    "Don't have an account?",
+                    "Remember your password?",
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.grey,
                       fontSize: 14,
@@ -122,15 +106,13 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.pushNamed(RouteNames.register);
+                      context.pushNamed(RouteNames.login);
                     },
-                    child: const Text("Sign Up"),
+                    child: const Text("Login"),
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 30),
 
             TextFormField(
               controller: _emailController,
@@ -146,30 +128,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               ),
             ),
 
-            const SizedBox(height: 16),
-
-            PasswordField(
-              controller: _passwordController,
-              validator: _validatePassword,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-
-            const SizedBox(height: 10),
-
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-                  context.pushNamed(RouteNames.forgotPassword);
-                },
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(color: AppConstants.primaryColor),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
 
             SizedBox(
               width: double.infinity,
@@ -187,7 +146,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                           ),
                         ),
                       )
-                    : const Text("Login", style: TextStyle(fontSize: 16)),
+                    : const Text(
+                        "Send Reset Link",
+                        style: TextStyle(fontSize: 16),
+                      ),
               ),
             ),
           ],

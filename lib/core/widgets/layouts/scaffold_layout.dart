@@ -4,6 +4,8 @@ class ScaffoldLayout extends StatelessWidget {
   final RefreshCallback? onRefresh;
   final Widget body;
   final Widget? bottomSheet;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
   final PreferredSizeWidget? appBar;
 
   const ScaffoldLayout({
@@ -12,6 +14,8 @@ class ScaffoldLayout extends StatelessWidget {
     required this.body,
     this.appBar,
     this.bottomSheet,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
   });
 
   @override
@@ -25,6 +29,8 @@ class ScaffoldLayout extends StatelessWidget {
         ),
       ),
       bottomSheet: bottomSheet,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
 }

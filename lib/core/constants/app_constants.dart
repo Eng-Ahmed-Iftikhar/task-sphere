@@ -13,4 +13,6 @@ class AppConstants {
   static const String googleClientId =
       "568613442085-8rrqjtvt6vs15bjra4ju12dd40srg925.apps.googleusercontent.com";
   static const String initialRoute = "/";
+  static const String emailVerificationUrl =
+      "https://tasksphere.com/email-verification";
 }

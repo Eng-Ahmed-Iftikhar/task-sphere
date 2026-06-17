@@ -35,34 +35,36 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomeAppBar(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: FeatureValue.values.map((feature) {
-          return SizedBox(
-            width: 350,
-            child: Card(
-              elevation: .5,
-              child: ListTile(
-                leading: Icon(feature.options["icon"]),
-                title: Text(
-                  feature.options["title"],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: FeatureValue.values.map((feature) {
+            return SizedBox(
+              child: Card(
+                elevation: .5,
+                child: ListTile(
+                  leading: Icon(feature.options["icon"]),
+                  title: Text(
+                    feature.options["title"],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
+                  subtitle: Text(
+                    feature.options["description"],
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward, size: 18),
+                  onTap: () {
+                    context.pushNamed(feature.options["route"]);
+                  },
                 ),
-                subtitle: Text(
-                  feature.options["description"],
-                  style: const TextStyle(fontSize: 13),
-                ),
-                trailing: const Icon(Icons.arrow_forward, size: 18),
-                onTap: () {
-                  context.pushNamed(feature.options["route"]);
-                },
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

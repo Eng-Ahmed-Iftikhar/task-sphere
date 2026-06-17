@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tasksphere/features/auth/presentation/screens/forgot_password.dart';
 import 'package:tasksphere/features/auth/presentation/screens/login_screen.dart';
+import 'package:tasksphere/features/auth/presentation/screens/re_auth_screen.dart';
 import 'package:tasksphere/features/auth/presentation/screens/register_screen.dart';
 import 'package:tasksphere/features/counter/counter_screen.dart';
 import 'package:tasksphere/features/home/screens/home_screen.dart';
+import 'package:tasksphere/features/home/screens/profile_screen.dart';
 import 'package:tasksphere/features/home/shells/home_shell.dart';
 import 'package:tasksphere/features/todos/create_todo_screen.dart';
 import 'package:tasksphere/features/todos/todos_screen.dart';
@@ -13,10 +16,13 @@ class RoutePaths {
   static const String home = "/";
   static const String login = "/login";
   static const String register = "/register";
+  static const String forgotPassword = "/forgot-password";
   static const String counter = "/counter";
   static const String todos = "/todos";
   static const String createTodo = "/create-todo";
   static const String updateTodo = "/update-todo/:id";
+  static const String profile = "/profile";
+  static const String reAuth = "/re-auth";
 }
 
 class RouteNames {
@@ -27,6 +33,9 @@ class RouteNames {
   static const String todos = "todos_route";
   static const String createTodo = "create_todo_route";
   static const String updateTodo = "update_todo_route";
+  static const String profile = "profile_route";
+  static const String forgotPassword = "forgot_password_route";
+  static const String reAuth = "re_auth_route";
 }
 
 final shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -69,6 +78,14 @@ final List<RouteBase> appRoutes = [
     ],
   ),
 
+  GoRoute(
+    path: RoutePaths.profile,
+    name: RouteNames.profile,
+    builder: (context, state) {
+      return ProfileScreen();
+    },
+  ),
+
   // AUTH ROUTES
   GoRoute(
     path: RoutePaths.register,
@@ -81,6 +98,18 @@ final List<RouteBase> appRoutes = [
     name: RouteNames.login,
     builder: (context, state) {
       return LoginScreen();
+    },
+  ),
+  GoRoute(
+    path: RoutePaths.forgotPassword,
+    name: RouteNames.forgotPassword,
+    builder: (context, state) => const ForgotPassword(),
+  ),
+  GoRoute(
+    path: RoutePaths.reAuth,
+    name: RouteNames.reAuth,
+    builder: (context, state) {
+      return ReAuthScreen();
     },
   ),
 ];
