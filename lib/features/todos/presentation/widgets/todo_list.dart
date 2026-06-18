@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tasksphere/features/todos/todo_model.dart';
-import 'package:tasksphere/features/todos/widgets/todo_tile.dart';
+import 'package:tasksphere/features/todos/domain/entities/todo_entity.dart';
+import 'package:tasksphere/features/todos/presentation/widgets/todo_tile.dart';
 
 class TodoList extends StatefulWidget {
-  final List<TodoModel> todos;
-  final VoidCallback? onUpdate;
+  final List<TodoEntity> todos;
 
-  const TodoList({super.key, required this.todos, this.onUpdate});
+  const TodoList({super.key, required this.todos});
 
   @override
   State<TodoList> createState() => _TodoListState();
@@ -19,9 +18,10 @@ class _TodoListState extends State<TodoList> {
 
     return ListView.builder(
       itemCount: todos.length,
+
       itemBuilder: (context, index) {
         final todo = todos[index];
-        return TodoTile(todo: todo, onUpdate: widget.onUpdate);
+        return TodoTile(todo: todo);
       },
     );
   }

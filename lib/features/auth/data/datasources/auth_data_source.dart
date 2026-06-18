@@ -11,7 +11,7 @@ import 'package:tasksphere/core/providers/network_providers.dart';
 import 'package:tasksphere/core/utils/app_utils.dart';
 import 'package:tasksphere/features/auth/data/models/auth_model.dart';
 
-abstract class AuthRemoteDataSource {
+abstract class AuthDataSource {
   /// Login a user with email and password
   Future<AuthModel> login({required String email, required String password});
 
@@ -33,7 +33,7 @@ abstract class AuthRemoteDataSource {
   Future<void> forgotPassword({required String email});
 }
 
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+class AuthDataSourceImpl implements AuthDataSource {
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference _firestore = FirebaseFirestore.instance.collection(
@@ -41,7 +41,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   );
   final ApiClient _apiClient;
 
-  AuthRemoteDataSourceImpl(this._apiClient);
+  AuthDataSourceImpl(this._apiClient);
 
   Future<String?> uploadImageToCloudinary(XFile imageFile) async {
     try {
@@ -412,10 +412,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 }
 
 // Provider
-final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
+final authRemoteDataSourceProvider = Provider<AuthDataSource>((ref) {
   final apiClient = ref.watch(apiClientProvider);
 
-  return AuthRemoteDataSourceImpl(apiClient);
+  return AuthDataSourceImpl(apiClient);
 });
 
 // ApiClient provider

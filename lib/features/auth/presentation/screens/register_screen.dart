@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/features/auth/widgets/register_form.dart';
+import 'package:tasksphere/features/auth/presentation/widgets/register_form.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

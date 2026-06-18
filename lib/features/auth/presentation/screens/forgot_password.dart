@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
-import 'package:tasksphere/features/auth/widgets/forgot_password_form.dart';
+import 'package:tasksphere/features/auth/presentation/widgets/forgot_password_form.dart';
 
 class ForgotPassword extends ConsumerStatefulWidget {
   const ForgotPassword({super.key});

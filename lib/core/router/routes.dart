@@ -4,13 +4,13 @@ import 'package:tasksphere/features/auth/presentation/screens/forgot_password.da
 import 'package:tasksphere/features/auth/presentation/screens/login_screen.dart';
 import 'package:tasksphere/features/auth/presentation/screens/re_auth_screen.dart';
 import 'package:tasksphere/features/auth/presentation/screens/register_screen.dart';
-import 'package:tasksphere/features/counter/counter_screen.dart';
-import 'package:tasksphere/features/home/screens/home_screen.dart';
-import 'package:tasksphere/features/home/screens/profile_screen.dart';
-import 'package:tasksphere/features/home/shells/home_shell.dart';
-import 'package:tasksphere/features/todos/create_todo_screen.dart';
-import 'package:tasksphere/features/todos/todos_screen.dart';
-import 'package:tasksphere/features/todos/update_todo_screen.dart';
+import 'package:tasksphere/features/counter/presentation/screens/counter_screen.dart';
+import 'package:tasksphere/features/home/presentation/screens/home_screen.dart';
+import 'package:tasksphere/features/home/presentation/screens/profile_screen.dart';
+import 'package:tasksphere/features/home/presentation/shells/home_shell.dart';
+import 'package:tasksphere/features/todos/presentation/screens/create_todo_screen.dart';
+import 'package:tasksphere/features/todos/presentation/screens/todos_screen.dart';
+import 'package:tasksphere/features/todos/presentation/screens/update_todo_screen.dart';
 
 class RoutePaths {
   static const String home = "/";
@@ -71,7 +71,8 @@ final List<RouteBase> appRoutes = [
         path: RoutePaths.updateTodo,
         name: RouteNames.updateTodo,
         builder: (context, state) {
-          final id = state.uri.queryParameters['id'] ?? '';
+          final id = state.pathParameters["id"] as String;
+
           return UpdateTodoScreen(id: id);
         },
       ),

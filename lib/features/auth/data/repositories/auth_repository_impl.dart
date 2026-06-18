@@ -6,15 +6,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tasksphere/core/error/exceptions.dart';
 import 'package:tasksphere/core/error/failures.dart';
 import 'package:tasksphere/core/error/firebase_auth_failures.dart';
-import 'package:tasksphere/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:tasksphere/features/auth/data/datasources/auth_data_source.dart';
 import 'package:tasksphere/features/auth/data/models/auth_model.dart';
 import 'package:tasksphere/features/auth/domain/entities/auth_entity.dart';
 import 'package:tasksphere/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource _remoteDataSource;
+  final AuthDataSource _dataSource;
 
-  AuthRepositoryImpl(this._remoteDataSource);
+  AuthRepositoryImpl(this._dataSource);
 
   @override
   Future<Either<Failure, AuthEntity>> login({
@@ -22,7 +22,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await _remoteDataSource.login(
+      final response = await _dataSource.login(
         email: email,
         password: password,
       );
@@ -46,9 +46,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await _remoteDataSource.reAuthenticate(
-        password: password,
-      );
+      final response = await _dataSource.reAuthenticate(password: password);
 
       return Right(response);
     } on FirebaseAuthException catch (e) {
@@ -72,7 +70,7 @@ class AuthRepositoryImpl implements AuthRepository {
     XFile? img,
   }) async {
     try {
-      final response = await _remoteDataSource.updateProfile(
+      final response = await _dataSource.updateProfile(
         name: name,
         email: email,
         img: img,
@@ -99,7 +97,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await _remoteDataSource.register(
+      final response = await _dataSource.register(
         name: name,
         email: email,
         password: password,
@@ -122,7 +120,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logout() async {
     try {
-      await _remoteDataSource.logout();
+      await _dataSource.logout();
       return const Right(null);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseAuthFailure.fromException(e));
@@ -149,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, AuthEntity>> getCurrentUser() async {
     try {
-      final user = await _remoteDataSource.getCurrentUser();
+      final user = await _dataSource.getCurrentUser();
       return Right(user.toEntity());
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseAuthFailure.fromException(e));
@@ -165,7 +163,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> forgotPassword({required String email}) async {
     try {
-      await _remoteDataSource.forgotPassword(email: email);
+      await _dataSource.forgotPassword(email: email);
       return Right(null);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseAuthFailure.fromException(e));
@@ -181,7 +179,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, AuthEntity>> loginWithGoogle() async {
     try {
-      final response = await _remoteDataSource.loginWithGoogle();
+      final response = await _dataSource.loginWithGoogle();
       return Right(response.toEntity());
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseAuthFailure.fromException(e));

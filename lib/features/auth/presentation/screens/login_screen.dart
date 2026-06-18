@@ -4,7 +4,7 @@ import 'package:tasksphere/core/constants/app_constants.dart';
 import 'package:tasksphere/core/widgets/buttons/social_login_button.dart';
 import 'package:tasksphere/core/widgets/dividers/text_divider.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
-import 'package:tasksphere/features/auth/widgets/login_form.dart';
+import 'package:tasksphere/features/auth/presentation/widgets/login_form.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});

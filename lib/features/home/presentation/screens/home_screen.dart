@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasksphere/core/router/routes.dart';
-import 'package:tasksphere/features/home/widgets/home_app_bar.dart';
+import 'package:tasksphere/features/home/presentation/widgets/home_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

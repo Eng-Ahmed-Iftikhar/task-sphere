@@ -9,8 +9,8 @@ import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/core/utils/app_utils.dart';
 import 'package:tasksphere/core/widgets/layouts/scaffold_layout.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
-import 'package:tasksphere/features/home/widgets/profile_avatar.dart';
-import 'package:tasksphere/features/home/widgets/profile_field.dart';
+import 'package:tasksphere/features/home/presentation/widgets/profile_avatar.dart';
+import 'package:tasksphere/features/home/presentation/widgets/profile_field.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
