@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
 import 'package:tasksphere/core/error/firebase_auth_failures.dart';
-import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/core/utils/app_utils.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
 
@@ -106,7 +105,7 @@ class _ForgotPasswordFormState extends ConsumerState<ForgotPasswordForm> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.pushNamed(RouteNames.login);
+                      context.pop();
                     },
                     child: const Text("Login"),
                   ),

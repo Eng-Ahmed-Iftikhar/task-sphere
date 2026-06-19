@@ -265,7 +265,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         validator: _validateName,
                       ),
                       const SizedBox(height: 14),
-                      provider == 'password'
+                      provider != 'google.com'
                           ? ProfileField(
                               controller: _emailController,
                               label: 'Email',
