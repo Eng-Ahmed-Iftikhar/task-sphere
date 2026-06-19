@@ -92,16 +92,39 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
     );
   }
 
-  Future<void> toggleCompleted({
-    required String id,
-    required bool completed,
-  }) async {
+  Future<void> delete({required String id}) async {
     final currentState =
         state.asData?.value ??
         const TodoState(isLoading: false, todos: [], failure: null);
 
-    final useCase = ref.read(toggleTodoUseCaseProvider);
-    final result = await useCase.execute(id: id, completed: completed);
+    final useCase = ref.read(deleteTodoUseCaseProvider);
+    final result = await useCase.execute(id: id);
+
+    state = result.fold(
+      (failure) => AsyncData(
+        currentState.copyWith(
+          isLoading: false,
+          failure: failure,
+          todos: currentState.todos,
+        ),
+      ),
+      (_) => AsyncData(
+        currentState.copyWith(
+          isLoading: false,
+          failure: null,
+          todos: currentState.todos.filter((todo) => todo.id != id).toList(),
+        ),
+      ),
+    );
+  }
+
+  Future<void> completeAllTodos() async {
+    final currentState =
+        state.asData?.value ??
+        const TodoState(isLoading: false, todos: [], failure: null);
+
+    final useCase = ref.read(completeAllTodosUseCaseProvider);
+    final result = await useCase.execute();
 
     state = result.fold(
       (failure) => AsyncData(
@@ -116,24 +139,23 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
           isLoading: false,
           failure: null,
           todos: currentState.todos.map((todo) {
-            if (todo.id == id) {
-              return todo.copyWith(completed: completed);
-            }
-            return todo;
+            return todo.copyWith(completed: true);
           }).toList(),
         ),
       ),
     );
   }
 
-  // Login
-  Future<void> delete({required String id}) async {
+  Future<void> toggleCompleted({
+    required String id,
+    required bool completed,
+  }) async {
     final currentState =
         state.asData?.value ??
         const TodoState(isLoading: false, todos: [], failure: null);
 
-    final useCase = ref.read(deleteTodoUseCaseProvider);
-    final result = await useCase.execute(id: id);
+    final useCase = ref.read(toggleTodoUseCaseProvider);
+    final result = await useCase.execute(id: id, completed: completed);
 
     result.fold(
       (failure) => state = AsyncData(
@@ -147,7 +169,12 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
         currentState.copyWith(
           isLoading: false,
           failure: null,
-          todos: currentState.todos.where((todo) => todo.id != id).toList(),
+          todos: currentState.todos.map((todo) {
+            if (todo.id == id) {
+              return todo.copyWith(completed: completed);
+            }
+            return todo;
+          }).toList(),
         ),
       ),
     );

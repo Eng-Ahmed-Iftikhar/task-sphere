@@ -79,6 +79,31 @@ class _UpdateTodoScreenState extends ConsumerState<UpdateTodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Update Todo")),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: isLoading ? null : updateTodo,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isLoading
+                  ? Colors.grey
+                  : AppConstants.primaryColor,
+            ),
+            child: isLoading
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : const Text("update"),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -119,31 +144,6 @@ class _UpdateTodoScreenState extends ConsumerState<UpdateTodoScreen> {
                     ),
                   ),
                 ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: isLoading ? null : updateTodo,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isLoading
-                      ? Colors.grey
-                      : AppConstants.primaryColor,
-                ),
-
-                child: isLoading
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: const CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text("Update"),
               ),
             ),
           ],

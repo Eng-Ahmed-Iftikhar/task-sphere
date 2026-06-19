@@ -18,6 +18,8 @@ abstract class TodoRepository {
     required String id,
     required bool completed,
   });
+
+  Future<Either<Failure, void>> completeAllTodos();
   Future<Either<Failure, List<TodoEntity>>> getAll();
   Future<Either<Failure, TodoEntity>> getById({required String id});
 }

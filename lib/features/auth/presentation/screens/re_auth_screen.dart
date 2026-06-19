@@ -104,15 +104,8 @@ class _ReAuthScreenState extends ConsumerState<ReAuthScreen> {
             )
           : null,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Column(
           children: [
-            Text(
-              'We need to verify it’s you before continuing',
-              style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
             Card(
               color: theme.cardColor,
               shape: RoundedRectangleBorder(

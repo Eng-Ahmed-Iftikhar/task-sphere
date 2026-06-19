@@ -92,6 +92,25 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
+  Future<Either<Failure, void>> completeAllTodos() async {
+    try {
+      final response = await _dataSource.toggleAllCompleted();
+
+      return Right(response);
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseAuthFailure.fromException(e));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on NetworkException {
+      return const Left(NetworkFailure());
+    } on UnauthorizedException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } on Exception {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, TodoEntity>> getById({required String id}) async {
     try {
       final response = await _dataSource.getById(id: id);

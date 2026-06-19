@@ -1,6 +1,7 @@
 // --- Use Cases ---
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasksphere/features/todos/data/repositories/todo_repository_impl.dart';
+import 'package:tasksphere/features/todos/domain/usecases/complete_all_todos_use_case.dart';
 import 'package:tasksphere/features/todos/domain/usecases/create_todo_use_case.dart';
 import 'package:tasksphere/features/todos/domain/usecases/delete_todo_use_case.dart';
 import 'package:tasksphere/features/todos/domain/usecases/get_todo_use_case.dart';
@@ -32,6 +33,12 @@ final getTodoUseCaseProvider = Provider<GetTodoUseCase>((ref) {
 
 final toggleTodoUseCaseProvider = Provider<ToggleTodoUseCase>((ref) {
   return ToggleTodoUseCase(ref.watch(todoRepositoryProvider));
+});
+
+final completeAllTodosUseCaseProvider = Provider<CompleteAllTodosUseCase>((
+  ref,
+) {
+  return CompleteAllTodosUseCase(ref.watch(todoRepositoryProvider));
 });
 
 final todoProvider = AsyncNotifierProvider<TodoNotifier, TodoState>(

@@ -23,6 +23,8 @@ abstract class TodoDataSource {
   /// Login a user with email and password
   Future<void> delete({required String id});
   Future<void> toggleCompleted({required String id, required bool completed});
+  Future<void> toggleAllCompleted();
+
   Future<List<TodoModel>> getAll();
   Future<TodoModel> getById({required String id});
 }
@@ -126,6 +128,42 @@ class TodoDataSourceImpl implements TodoDataSource {
   }
 
   @override
+  Future<void> toggleAllCompleted() async {
+    try {
+      // Check network connection
+      final hasNetwork = await AppUtils.hasNetworkConnection();
+      if (!hasNetwork) {
+        throw NetworkException();
+      }
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw UnauthorizedException(message: 'No authenticated user found');
+      }
+
+      final userRef = userCollection.doc(user.uid);
+      final querySnapshot = await todoCollection
+          .where('user', isEqualTo: userRef)
+          .where('completed', isEqualTo: false)
+          .get();
+
+      final batch = FirebaseFirestore.instance.batch();
+
+      for (final doc in querySnapshot.docs) {
+        batch.update(doc.reference, {
+          'completed': true,
+          'updated_at': FieldValue.serverTimestamp(),
+        });
+      }
+
+      if (querySnapshot.docs.isNotEmpty) {
+        await batch.commit();
+      }
+    } on Exception catch (e) {
+      throw _handleException(e);
+    }
+  }
+
+  @override
   Future<void> delete({required String id}) async {
     try {
       // Check network connection
@@ -184,7 +222,9 @@ class TodoDataSourceImpl implements TodoDataSource {
         throw UnauthorizedException(message: 'No authenticated user found');
       }
 
-      final todos = await todoCollection.get();
+      final todos = await todoCollection
+          .where("user", isEqualTo: userCollection.doc(user.uid))
+          .get();
       final dataList = await Future.wait(
         todos.docs.map((todo) async {
           final data = todo.data() as Map<String, dynamic>;

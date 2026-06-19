@@ -205,7 +205,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 height: 52,
                 child: FloatingActionButton.extended(
                   onPressed: _isSaving ? null : () => _saveProfile(),
-                  backgroundColor: AppConstants.primaryColor,
+                  backgroundColor: _isSaving
+                      ? Colors.grey
+                      : AppConstants.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -255,14 +257,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Profile details',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      const SizedBox(height: 18),
                       ProfileField(
                         controller: _nameController,
                         label: 'Full name',

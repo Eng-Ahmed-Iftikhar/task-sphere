@@ -8,6 +8,8 @@ final lightTheme = ThemeData(
 
   scaffoldBackgroundColor: Colors.white,
 
+  snackBarTheme: SnackBarThemeData(backgroundColor: Colors.white),
+
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.white,
     foregroundColor: Colors.black,
@@ -58,7 +60,10 @@ final darkTheme = ThemeData(
   primaryColor: AppConstants.primaryColor,
 
   scaffoldBackgroundColor: const Color(0xFF121212),
-
+  snackBarTheme: SnackBarThemeData(
+    backgroundColor: Colors.black,
+    contentTextStyle: TextStyle(color: Colors.white),
+  ),
   appBarTheme: AppBarTheme(
     backgroundColor: const Color(0xFF1E1E1E),
     foregroundColor: Colors.white,

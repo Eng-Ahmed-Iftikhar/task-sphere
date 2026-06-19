@@ -97,10 +97,14 @@ class _TodoTileState extends ConsumerState<TodoTile> {
                   strokeWidth: 2,
                 ),
               )
-            : Checkbox(
-                value: todo.completed,
-                onChanged: toggleTodo,
-                activeColor: AppConstants.secondaryColor,
+            : SizedBox(
+                height: 20,
+                width: 20,
+                child: Checkbox(
+                  value: todo.completed,
+                  onChanged: toggleTodo,
+                  activeColor: AppConstants.secondaryColor,
+                ),
               ),
 
         title: Text(
@@ -126,27 +130,40 @@ class _TodoTileState extends ConsumerState<TodoTile> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              onPressed: navigateToUpdatePage,
-              icon: Icon(
-                Icons.edit,
-                color: AppConstants.secondaryColor,
-                size: 20,
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: IconButton(
+                onPressed: navigateToUpdatePage,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: Icon(
+                  Icons.edit,
+                  color: AppConstants.secondaryColor,
+                  size: 20,
+                ),
               ),
             ),
-            isDeleting
-                ? SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
+            SizedBox(height: 20, width: 20),
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: isDeleting
+                  ? const CircularProgressIndicator(
                       color: Colors.red,
                       strokeWidth: 2,
+                    )
+                  : IconButton(
+                      onPressed: deleteTodo,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                        size: 20,
+                      ),
                     ),
-                  )
-                : IconButton(
-                    onPressed: deleteTodo,
-                    icon: const Icon(Icons.delete, color: Colors.red, size: 20),
-                  ),
+            ),
           ],
         ),
       ),

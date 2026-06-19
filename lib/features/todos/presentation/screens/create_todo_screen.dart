@@ -51,6 +51,31 @@ class _CreateTodoScreenState extends ConsumerState<CreateTodoScreen> {
   Widget build(BuildContext context) {
     return ScaffoldLayout(
       appBar: AppBar(title: Text("Create todo")),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: isLoading ? null : saveTodo,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isLoading
+                  ? Colors.grey
+                  : AppConstants.primaryColor,
+            ),
+            child: isLoading
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : const Text("Save"),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
@@ -86,30 +111,6 @@ class _CreateTodoScreenState extends ConsumerState<CreateTodoScreen> {
                   }
                   return null;
                 },
-              ),
-
-              const SizedBox(height: 24),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: isLoading ? null : saveTodo,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isLoading
-                        ? Colors.grey
-                        : AppConstants.primaryColor,
-                  ),
-                  child: isLoading
-                      ? SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: const CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : const Text("Save"),
-                ),
               ),
             ],
           ),

@@ -15,6 +15,8 @@ class TodosScreen extends ConsumerStatefulWidget {
 }
 
 class _TodosScreenState extends ConsumerState<TodosScreen> {
+  bool _isLoading = false;
+
   Future<void> loadTodos() async {
     final todoActions = ref.read(todoProvider.notifier);
     await todoActions.getAll();
@@ -22,6 +24,21 @@ class _TodosScreenState extends ConsumerState<TodosScreen> {
 
   Future<void> navigateToCreatePage() async {
     context.pushNamed(RouteNames.createTodo);
+  }
+
+  Future<void> completeAllTodos() async {
+    final todoActions = ref.read(todoProvider.notifier);
+    setState(() {
+      _isLoading = true;
+    });
+    await todoActions.completeAllTodos();
+    setState(() {
+      _isLoading = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("All todos completed successfully.")),
+    );
   }
 
   @override
@@ -50,10 +67,39 @@ class _TodosScreenState extends ConsumerState<TodosScreen> {
           if (todos.isEmpty) {
             return const EmptyTodos();
           }
+          final hasIncompleteTodos = todos.any((todo) => !todo.completed);
           return Padding(
             padding: const EdgeInsets.all(8.0),
-
-            child: TodoList(todos: todos),
+            child: Column(
+              children: [
+                if (hasIncompleteTodos) ...[
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: completeAllTodos,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          _isLoading
+                              ? SizedBox(
+                                  height: 16,
+                                  width: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(width: 10),
+                          Text("Mark all completed"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+                Expanded(child: TodoList(todos: todos)),
+              ],
+            ),
           );
         },
         error: (error, stackTrace) => Center(child: Text(error.toString())),
