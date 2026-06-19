@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tasksphere/core/router/routes.dart';
 import 'package:tasksphere/core/utils/dialogs/show_logout_dialog.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
+import 'package:tasksphere/features/todos/presentation/providers/todo_providers.dart';
 
 class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -42,6 +43,7 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
               case 'logout':
                 final islogout = await showLogoutDialog(context);
                 if (islogout == true) {
+                  await ref.read(todoProvider.notifier).reset();
                   await ref.read(authProvider.notifier).logout();
                 }
                 break;

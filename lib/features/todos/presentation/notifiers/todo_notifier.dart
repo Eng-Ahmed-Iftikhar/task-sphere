@@ -11,7 +11,7 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
   @override
   Future<TodoState> build() async {
     state = const AsyncLoading();
-
+    print("TodoNotifier ");
     final currentUseCase = ref.read(getTodosUseCaseProvider);
     final result = await currentUseCase.execute();
 
@@ -89,6 +89,16 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
           }).toList(),
         ),
       ),
+    );
+  }
+
+  Future<void> reset() async {
+    final currentState =
+        state.asData?.value ??
+        const TodoState(isLoading: false, todos: [], failure: null);
+
+    state = AsyncData(
+      currentState.copyWith(isLoading: false, failure: null, todos: []),
     );
   }
 

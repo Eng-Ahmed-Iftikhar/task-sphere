@@ -17,6 +17,12 @@ class TodosScreen extends ConsumerStatefulWidget {
 class _TodosScreenState extends ConsumerState<TodosScreen> {
   bool _isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    loadTodos();
+  }
+
   Future<void> loadTodos() async {
     final todoActions = ref.read(todoProvider.notifier);
     await todoActions.getAll();
@@ -60,6 +66,7 @@ class _TodosScreenState extends ConsumerState<TodosScreen> {
       body: todos.when(
         data: (todoState) {
           final todos = todoState.todos;
+          print("todos $todos");
           final error = todoState.failure;
           if (error != null) {
             return Center(child: Text(error.message));
