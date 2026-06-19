@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tasksphere/core/constants/app_constants.dart';
+import 'package:tasksphere/core/error/firebase_auth_failures.dart';
 import 'package:tasksphere/core/utils/app_utils.dart';
 import 'package:tasksphere/core/widgets/inputs/password_field.dart';
 import 'package:tasksphere/core/widgets/layouts/scaffold_layout.dart';
@@ -48,13 +49,30 @@ class _ReAuthScreenState extends ConsumerState<ReAuthScreen> {
 
     setState(() => _isSubmitting = true);
     final authActions = ref.read(authProvider.notifier);
-    await authActions.reAuthenticate(password: _passwordController.text);
+    final result = await authActions.reAuthenticate(
+      password: _passwordController.text,
+    );
 
     setState(() => _isSubmitting = false);
-
-    if (!mounted) return;
-    // Pop back to profile with success flag
-    context.pop(true);
+    result.fold(
+      (failure) {
+        if (failure is FirebaseAuthFailure) {
+          final code = failure.code;
+          if (code == FirebaseAuthCodes.invalidCredential) {
+            final errorMessage = failure.message;
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(errorMessage)));
+            return;
+          }
+        }
+      },
+      (_) {
+        if (!mounted) return;
+        // Pop back to profile with success flag
+        context.pop(true);
+      },
+    );
   }
 
   @override

@@ -1,7 +1,9 @@
 // Auth notifier
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tasksphere/core/error/failures.dart';
 import 'package:tasksphere/core/error/firebase_auth_failures.dart';
 import 'package:tasksphere/features/auth/presentation/notifiers/auth_state.dart';
 import 'package:tasksphere/features/auth/presentation/providers/auth_providers.dart';
@@ -146,11 +148,11 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     );
   }
 
-  Future<void> reAuthenticate({required String password}) async {
+  Future<Either<Failure, void>> reAuthenticate({
+    required String password,
+  }) async {
     final useCase = ref.read(reAuthUseCaseProvider);
-    final result = await useCase.execute(password: password);
-
-    return result.fold((failure) => failure, (auth) => auth);
+    return await useCase.execute(password: password);
   }
 
   // Login
